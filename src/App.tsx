@@ -1,9 +1,15 @@
 import "./App.css";
 
+import Welcome from "./components/Welcome";
+import Option from "./components/Option";
+
 function App() {
   return (
-    <div>
-      <p className="font-bold">Hello TYPESCRIPT + REACT + TAILWIND</p>
+    <div className="container mx-auto py-32 px-20">
+      <div className="flex justify-between">
+        <Welcome />
+        <Option />
+      </div>
     </div>
   );
 }

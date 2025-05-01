@@ -1,1 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap");
+
 @import "tailwindcss";
+
+body {
+  font-family: "Cal Sans", sans-serif;
+  font-size: 2rem;
+  background-color: rgb(52, 62, 85);
+  color: white;
+}
