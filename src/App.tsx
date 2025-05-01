@@ -1,7 +1,6 @@
 import "./App.css";
 
 import Welcome from "./components/Welcome";
-import Option from "./components/Option";
 
 import Accessibility from "./components/Quiz/Accessibility";
 import Javascript from "./components/Quiz/Javascript";
@@ -14,7 +13,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
-      <div className="container mx-auto py-32 px-20">
+      <div className="container mx-auto py-30 px-20">
         <div>
           <Routes>
             <Route path="/" element={<Welcome />} />

@@ -6,6 +6,7 @@ body {
   font-family: "Inter", sans-serif;
   background-color: rgb(52, 62, 85);
   color: white;
+  background-image: url(../public/images/pattern-background-desktop-dark.svg);
 }
 
 @theme {
