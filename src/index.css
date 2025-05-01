@@ -7,3 +7,11 @@ body {
   background-color: rgb(52, 62, 85);
   color: white;
 }
+
+@theme {
+  --option-bg: #3c4d67;
+  --html-background: #fff0e7;
+  --css-background: #e0fdf0;
+  --javascript-background: #eeeef3;
+  --accessibility-background: #f6e5ff;
+}
