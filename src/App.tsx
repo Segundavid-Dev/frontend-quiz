@@ -13,7 +13,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
-      <div className="container mx-auto py-30 px-20">
+      <div className="container mx-auto pt-20 pb-30 px-20">
         <div>
           <Routes>
             <Route path="/" element={<Welcome />} />
