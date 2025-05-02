@@ -34,17 +34,23 @@ export default function HTML() {
   }
 
   function handleNextQuestion() {
-    console.log("Next question will show up");
+    const newValue = questionCount + 1;
+    if (questionCount === 10) return;
+    setQuestionCount(newValue);
+    setOptionClicked(false);
   }
 
-  useEffect(function () {
-    async function fetchData() {
-      const data = await fetch("/data.json");
-      const response = await data.json();
-      setQuestions(response.quizzes[0].questions[1]); // grabs a single object from the response json
-    }
-    fetchData();
-  }, []);
+  useEffect(
+    function () {
+      async function fetchData() {
+        const data = await fetch("/data.json");
+        const response = await data.json();
+        setQuestions(response.quizzes[0].questions[questionCount]); // grabs a single object from the response json
+      }
+      fetchData();
+    },
+    [questionCount]
+  );
   return (
     <div>
       <div className="flex items-center">
