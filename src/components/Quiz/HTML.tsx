@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { MdOutlineCancel } from "react-icons/md";
+
 type QuestionProps = {
   question: string;
   options: string[];
@@ -17,12 +19,29 @@ type QuestionProps = {
 export default function HTML() {
   const [questions, setQuestions] = useState<QuestionProps | null>(null);
   const [questionCount, setQuestionCount] = useState<number>(1);
+  const [optionClicked, setOptionClicked] = useState(false);
+  const [displayError, setDisplayError] = useState(false);
+
+  function handleClickOption() {
+    setOptionClicked(true);
+  }
+
+  function handleSubmit() {
+    if (!optionClicked) {
+      setDisplayError(true);
+    }
+    console.log("Question submitted");
+  }
+
+  function handleNextQuestion() {
+    console.log("Next question will show up");
+  }
 
   useEffect(function () {
     async function fetchData() {
       const data = await fetch("/data.json");
       const response = await data.json();
-      setQuestions(response.quizzes[0].questions[0]); // grabs a single object from the response json
+      setQuestions(response.quizzes[0].questions[1]); // grabs a single object from the response json
     }
     fetchData();
   }, []);
@@ -35,8 +54,8 @@ export default function HTML() {
         <h1 className="ml-3">HTML</h1>
       </div>
 
-      <div className="grid grid-cols-2 mt-10">
-        <div>
+      <div className="grid grid-cols-2 mt-5">
+        <div className="w-[80%]">
           <small className="text-gray-400 italic">
             Question {questionCount} of 10
           </small>
@@ -46,7 +65,8 @@ export default function HTML() {
           {questions?.options.map((option, index) => (
             <li
               key={index}
-              className="bg-[var(--option-bg)] mb-5 text-[20px] p-5 rounded-2xl cursor-pointer transition-transform duration-400 hover:translate-x-10"
+              onClick={handleClickOption}
+              className="bg-[var(--option-bg)] mb-5 p-5 rounded-2xl cursor-pointer transition-transform duration-400 hover:translate-x-10"
             >
               {index === 0 && (
                 <QuizOptionId>
@@ -71,6 +91,29 @@ export default function HTML() {
               {option}
             </li>
           ))}
+          {optionClicked ? (
+            <button
+              className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+              onClick={handleNextQuestion}
+            >
+              Next Question
+            </button>
+          ) : (
+            <button
+              className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+              onClick={handleSubmit}
+            >
+              Submit Answer
+            </button>
+          )}
+          {displayError && (
+            <p className="text-[18px] flex items-center justify-center gap-2 pt-2">
+              <span>
+                <MdOutlineCancel className="text-red-500" />
+              </span>
+              <span>Please select an option</span>
+            </p>
+          )}
         </ul>
       </div>
     </div>

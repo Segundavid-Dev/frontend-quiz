@@ -7,6 +7,8 @@ body {
   background-color: rgb(52, 62, 85);
   color: white;
   background-image: url(../public/images/pattern-background-desktop-dark.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 @theme {
@@ -15,4 +17,6 @@ body {
   --css-background: #e0fdf0;
   --javascript-background: #eeeef3;
   --accessibility-background: #f6e5ff;
+  --submit-button: #a629f6;
+  --submit-button-hover: #6a199f;
 }
