@@ -8,22 +8,22 @@ type QuestionProps = {
   answer: string;
 };
 
-// type AllQuestionsProps = QuestionProps[];
-
-// type QuizzesProps = {
-//   title: string;
-//   icon: string;
-//   questions: AllQuestionsProps;
-// };
-
 export default function HTML() {
   const [questions, setQuestions] = useState<QuestionProps | null>(null);
   const [questionCount, setQuestionCount] = useState<number>(1);
   const [optionClicked, setOptionClicked] = useState(false);
   const [displayError, setDisplayError] = useState(false);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
+    null
+  );
 
-  function handleClickOption() {
+  function handleClickOption(index: number) {
+    // early return to handle selecting multiple answers
+    if (selectedOptionIndex) return;
+    console.log(`My index value is ${index}`);
     setOptionClicked(true);
+    setSelectedOptionIndex(index); // set the clicked option index
+    setDisplayError(false);
   }
 
   function handleSubmit() {
@@ -38,6 +38,7 @@ export default function HTML() {
     if (questionCount === 10) return;
     setQuestionCount(newValue);
     setOptionClicked(false);
+    setSelectedOptionIndex(null);
   }
 
   useEffect(
@@ -71,8 +72,11 @@ export default function HTML() {
           {questions?.options.map((option, index) => (
             <li
               key={index}
-              onClick={handleClickOption}
-              className="bg-[var(--option-bg)] mb-5 p-5 rounded-2xl cursor-pointer transition-transform duration-400 hover:translate-x-10"
+              onClick={() => handleClickOption(index)}
+              className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl cursor-pointer transition-transform duration-400 hover:translate-x-10 ${
+                selectedOptionIndex === index ? "translate-x-10" : ""
+              }
+              `}
             >
               {index === 0 && (
                 <QuizOptionId>
