@@ -12,7 +12,7 @@ type QuestionProps = {
 
 export default function HTML() {
   const [questions, setQuestions] = useState<QuestionProps | null>(null);
-  const [questionCount, setQuestionCount] = useState<number>(9);
+  const [questionCount, setQuestionCount] = useState<number>(7);
   const [optionClicked, setOptionClicked] = useState(false);
   const [displayError, setDisplayError] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
@@ -158,7 +158,9 @@ export default function HTML() {
               {option}
             </li>
           ))}
-          {submitQuestion ? (
+          {submitQuestion && questionCount >= 9 ? (
+            <SubmitQuizNavigate />
+          ) : submitQuestion && questionCount < 9 ? (
             <button
               className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
               onClick={handleNextQuestion}
