@@ -17,9 +17,8 @@ export default function HTML() {
     null
   );
   const [Answer, setAnswer] = useState<string | null>(null);
-  // handling question status
-  const [borderSelectedOption, setBorderSelectedOption] = useState(false);
   const [submitQuestion, setSubmitQuestion] = useState(false);
+  const [submittedOption, setSubmittedOption] = useState<string>("");
 
   function handleClickOption(index: number, option: string) {
     // early return to handle selecting multiple answers
@@ -27,23 +26,19 @@ export default function HTML() {
     setOptionClicked(true);
     setSelectedOptionIndex(index); // set the clicked option index
     setDisplayError(false);
-
-    // handle correct or wrong option here
-    if (option === Answer) {
-      setBorderSelectedOption(true);
-    }
   }
 
-  function handleQuestionStatus(option: string) {
-    if (option === Answer) {
-      setBorderSelectedOption(true);
-    } else {
-      setBorderSelectedOption(false);
-    }
+  function handleQuestionStatus(option: string, index: number) {
+    setSubmittedOption(option);
   }
 
-  function handleSubmit() {
+  function handleSubmit(submittedOption: string) {
     setSubmitQuestion(true);
+    if (submittedOption === Answer) {
+      console.log("you are correct!");
+    } else {
+      console.log("you are wrong");
+    }
     if (!optionClicked) {
       setDisplayError(true);
     }
@@ -53,8 +48,11 @@ export default function HTML() {
     const newValue = questionCount + 1;
     // early return
     if (questionCount >= 9) return;
+    // early return to handle not selecting any options
+    if (!submittedOption) return;
     setQuestionCount(newValue);
     setOptionClicked(false);
+    setSubmitQuestion(false);
     setSelectedOptionIndex(null);
   }
 
@@ -93,12 +91,30 @@ export default function HTML() {
               key={index}
               onClick={() => {
                 handleClickOption(index, option);
-                handleQuestionStatus(option);
+                handleQuestionStatus(option, index);
               }}
               className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl ${
-                submitQuestion ? "cursor-not-allowed" : "cursor-pointer"
+                submitQuestion && submittedOption
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
               } transition-transform duration-400 hover:border-[var(--submit-button)] ${
-                selectedOptionIndex === index ? "translate-x-10" : ""
+                selectedOptionIndex === index && !submitQuestion
+                  ? "translate-x-10"
+                  : ""
+              }
+              ${
+                submitQuestion &&
+                option === submittedOption &&
+                option === Answer
+                  ? "bg-emerald-500"
+                  : "" /*after clicking submit, any option that matches Answer should turn green*/
+              }
+              ${
+                submitQuestion &&
+                option === submittedOption &&
+                option !== Answer
+                  ? "bg-red-500"
+                  : ""
               }
               `}
             >
@@ -135,7 +151,7 @@ export default function HTML() {
           ) : (
             <button
               className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit(submittedOption)}
             >
               Submit Answer
             </button>
@@ -160,7 +176,9 @@ type QuizOptionIdProps = {
 
 function QuizOptionId({ children }: QuizOptionIdProps) {
   return (
-    <span className="bg-white text-[var(--option-bg)] py-3 px-4 mr-3 font-bold rounded-lg">
+    <span
+      className={`bg-white text-[var(--option-bg)] py-3 px-4 mr-3 font-bold rounded-lg`}
+    >
       {children}
     </span>
   );
