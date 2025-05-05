@@ -33,26 +33,25 @@ export default function HTML() {
   }
 
   function handleSubmit(submittedOption: string) {
-    setSubmitQuestion(true);
-    if (submittedOption === Answer) {
-      console.log("you are correct!");
-    } else {
-      console.log("you are wrong");
-    }
     if (!optionClicked) {
       setDisplayError(true);
     }
+    setSubmitQuestion(true);
   }
 
   function handleNextQuestion() {
+    // reset submittedOption back to default upon every click of "Next Button"
+    if (submittedOption) {
+      setSubmitQuestion(false);
+    }
+    setSubmittedOption("");
+    // early return to handle not selecting any options
+    if (!submittedOption) return;
     const newValue = questionCount + 1;
     // early return
     if (questionCount >= 9) return;
-    // early return to handle not selecting any options
-    if (!submittedOption) return;
     setQuestionCount(newValue);
     setOptionClicked(false);
-    setSubmitQuestion(false);
     setSelectedOptionIndex(null);
   }
 
