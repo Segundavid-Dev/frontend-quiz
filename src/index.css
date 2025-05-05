@@ -9,6 +9,7 @@ body {
   background-image: url(../public/images/pattern-background-desktop-dark.svg);
   background-repeat: no-repeat;
   background-position: center center;
+  user-select: none;
 }
 
 @theme {

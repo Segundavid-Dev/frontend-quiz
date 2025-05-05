@@ -10,32 +10,49 @@ type QuestionProps = {
 
 export default function HTML() {
   const [questions, setQuestions] = useState<QuestionProps | null>(null);
-  const [questionCount, setQuestionCount] = useState<number>(1);
+  const [questionCount, setQuestionCount] = useState<number>(0);
   const [optionClicked, setOptionClicked] = useState(false);
   const [displayError, setDisplayError] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
     null
   );
+  const [Answer, setAnswer] = useState<string | null>(null);
+  // handling question status
+  const [borderSelectedOption, setBorderSelectedOption] = useState(false);
+  const [submitQuestion, setSubmitQuestion] = useState(false);
 
-  function handleClickOption(index: number) {
+  function handleClickOption(index: number, option: string) {
     // early return to handle selecting multiple answers
-    if (selectedOptionIndex) return;
-    console.log(`My index value is ${index}`);
+    if (submitQuestion && selectedOptionIndex !== null) return;
     setOptionClicked(true);
     setSelectedOptionIndex(index); // set the clicked option index
     setDisplayError(false);
+
+    // handle correct or wrong option here
+    if (option === Answer) {
+      setBorderSelectedOption(true);
+    }
+  }
+
+  function handleQuestionStatus(option: string) {
+    if (option === Answer) {
+      setBorderSelectedOption(true);
+    } else {
+      setBorderSelectedOption(false);
+    }
   }
 
   function handleSubmit() {
+    setSubmitQuestion(true);
     if (!optionClicked) {
       setDisplayError(true);
     }
-    console.log("Question submitted");
   }
 
   function handleNextQuestion() {
     const newValue = questionCount + 1;
-    if (questionCount === 10) return;
+    // early return
+    if (questionCount >= 9) return;
     setQuestionCount(newValue);
     setOptionClicked(false);
     setSelectedOptionIndex(null);
@@ -47,6 +64,8 @@ export default function HTML() {
         const data = await fetch("/data.json");
         const response = await data.json();
         setQuestions(response.quizzes[0].questions[questionCount]); // grabs a single object from the response json
+        setAnswer(response.quizzes[0].questions[questionCount].answer);
+        // select answer string
       }
       fetchData();
     },
@@ -64,7 +83,7 @@ export default function HTML() {
       <div className="grid grid-cols-2 mt-5">
         <div className="w-[80%]">
           <small className="text-gray-400 italic">
-            Question {questionCount} of 10
+            Question {questionCount + 1} of 10
           </small>
           <h1 className="text-4xl font-bold">{questions?.question}</h1>
         </div>
@@ -72,8 +91,13 @@ export default function HTML() {
           {questions?.options.map((option, index) => (
             <li
               key={index}
-              onClick={() => handleClickOption(index)}
-              className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl cursor-pointer transition-transform duration-400 hover:translate-x-10 ${
+              onClick={() => {
+                handleClickOption(index, option);
+                handleQuestionStatus(option);
+              }}
+              className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl ${
+                submitQuestion ? "cursor-not-allowed" : "cursor-pointer"
+              } transition-transform duration-400 hover:border-[var(--submit-button)] ${
                 selectedOptionIndex === index ? "translate-x-10" : ""
               }
               `}
@@ -101,7 +125,7 @@ export default function HTML() {
               {option}
             </li>
           ))}
-          {optionClicked ? (
+          {submitQuestion ? (
             <button
               className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
               onClick={handleNextQuestion}
