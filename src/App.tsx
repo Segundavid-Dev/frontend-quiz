@@ -7,6 +7,7 @@ import Javascript from "./components/Quiz/Javascript";
 import CSS from "./components/Quiz/CSS";
 import HTML from "./components/Quiz/HTML";
 import Error from "./components/Error";
+import Finished from "./components/Quiz/FInished";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -17,6 +18,7 @@ function App() {
         <div>
           <Routes>
             <Route path="/" element={<Welcome />} />
+            <Route path="/finished" element={<Finished />} />
             <Route path="/HTML" element={<HTML />} />
             <Route path="/CSS" element={<CSS />} />
             <Route path="/Javascript" element={<Javascript />} />

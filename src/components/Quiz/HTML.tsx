@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { MdOutlineCancel } from "react-icons/md";
 
 type QuestionProps = {
@@ -10,7 +12,7 @@ type QuestionProps = {
 
 export default function HTML() {
   const [questions, setQuestions] = useState<QuestionProps | null>(null);
-  const [questionCount, setQuestionCount] = useState<number>(0);
+  const [questionCount, setQuestionCount] = useState<number>(9);
   const [optionClicked, setOptionClicked] = useState(false);
   const [displayError, setDisplayError] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
@@ -19,8 +21,10 @@ export default function HTML() {
   const [Answer, setAnswer] = useState<string | null>(null);
   const [submitQuestion, setSubmitQuestion] = useState(false);
   const [submittedOption, setSubmittedOption] = useState<string>("");
+  const [progressBar, setProgressBar] = useState<number>(10);
+  const [correctScore, setCorrectScore] = useState(0);
 
-  function handleClickOption(index: number, option: string) {
+  function handleClickOption(index: number) {
     // early return to handle selecting multiple answers
     if (submitQuestion && selectedOptionIndex !== null) return;
     setOptionClicked(true);
@@ -28,15 +32,18 @@ export default function HTML() {
     setDisplayError(false);
   }
 
-  function handleQuestionStatus(option: string, index: number) {
+  function handleQuestionStatus(option: string) {
     setSubmittedOption(option);
   }
 
-  function handleSubmit(submittedOption: string) {
+  function handleSubmit() {
     if (!optionClicked) {
       setDisplayError(true);
     }
     setSubmitQuestion(true);
+    if (submittedOption === Answer) {
+      setCorrectScore((correctScore) => correctScore + 1);
+    }
   }
 
   function handleNextQuestion() {
@@ -53,6 +60,9 @@ export default function HTML() {
     setQuestionCount(newValue);
     setOptionClicked(false);
     setSelectedOptionIndex(null);
+
+    // update progressBar count
+    setProgressBar((progressBar) => progressBar + 10);
   }
 
   useEffect(
@@ -88,8 +98,8 @@ export default function HTML() {
 
           <div>
             <progress
-              value={5}
-              max={10}
+              value={progressBar}
+              max={100}
               className="w-[80%] mx-auto overflow-hidden [&::-webkit-progress-bar]:bg-[var(--option-bg)] [&::-webkit-progress-value]:bg-[var(--submit-button)] [&::-moz-progress-bar]: bg-[var(--submit-button)] h-2 rounded-full"
             ></progress>
           </div>
@@ -99,8 +109,8 @@ export default function HTML() {
             <li
               key={index}
               onClick={() => {
-                handleClickOption(index, option);
-                handleQuestionStatus(option, index);
+                handleClickOption(index);
+                handleQuestionStatus(option);
               }}
               className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl ${
                 submitQuestion && submittedOption
@@ -158,7 +168,7 @@ export default function HTML() {
           ) : (
             <button
               className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
-              onClick={() => handleSubmit(submittedOption)}
+              onClick={handleSubmit}
             >
               Submit Answer
             </button>
@@ -188,5 +198,23 @@ function QuizOptionId({ children }: QuizOptionIdProps) {
     >
       {children}
     </span>
+  );
+}
+
+function SubmitQuizNavigate() {
+  const navigate = useNavigate();
+
+  function handleNavigate() {
+    navigate("/finished");
+  }
+  return (
+    <div>
+      <button
+        className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+        onClick={handleNavigate}
+      >
+        Submit Quiz
+      </button>
+    </div>
   );
 }

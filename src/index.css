@@ -8,7 +8,8 @@ body {
   color: white;
   background-image: url(../public/images/pattern-background-desktop-dark.svg);
   background-repeat: no-repeat;
-  background-position: center center;
+  background-size: cover;
+  background-clip: border-box;
   user-select: none;
 }
 
