@@ -12,7 +12,7 @@ type QuestionProps = {
 
 export default function HTML() {
   const [questions, setQuestions] = useState<QuestionProps | null>(null);
-  const [questionCount, setQuestionCount] = useState<number>(7);
+  const [questionCount, setQuestionCount] = useState<number>(0);
   const [optionClicked, setOptionClicked] = useState(false);
   const [displayError, setDisplayError] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
@@ -23,6 +23,8 @@ export default function HTML() {
   const [submittedOption, setSubmittedOption] = useState<string>("");
   const [progressBar, setProgressBar] = useState<number>(10);
   const [correctScore, setCorrectScore] = useState(0);
+  const [icon, setIcon] = useState("");
+  const [title, setTitle] = useState("");
 
   function handleClickOption(index: number) {
     // early return to handle selecting multiple answers
@@ -73,6 +75,8 @@ export default function HTML() {
         setQuestions(response.quizzes[0].questions[questionCount]); // grabs a single object from the response json
         setAnswer(response.quizzes[0].questions[questionCount].answer);
         // select answer string
+        setIcon(response.quizzes[0].icon);
+        setTitle(response.quizzes[0].title);
       }
       fetchData();
     },
@@ -159,7 +163,11 @@ export default function HTML() {
             </li>
           ))}
           {submitQuestion && questionCount >= 9 ? (
-            <SubmitQuizNavigate />
+            <SubmitQuizNavigate
+              correctScore={correctScore}
+              icon={icon}
+              title={title}
+            />
           ) : submitQuestion && questionCount < 9 ? (
             <button
               className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
@@ -203,12 +211,20 @@ function QuizOptionId({ children }: QuizOptionIdProps) {
   );
 }
 
-function SubmitQuizNavigate() {
+type correctScoreProps = {
+  correctScore: number;
+  icon: string;
+  title: string;
+};
+
+function SubmitQuizNavigate({ correctScore, icon, title }: correctScoreProps) {
+  console.log(title);
   const navigate = useNavigate();
 
   function handleNavigate() {
-    navigate("/finished");
+    navigate("/finished", { state: { correctScore, icon, title } });
   }
+
   return (
     <div>
       <button
