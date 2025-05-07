@@ -10,6 +10,7 @@ body {
   background-size: cover;
   background-clip: border-box;
   user-select: none;
+  background-position: center center;
 }
 
 @theme {
