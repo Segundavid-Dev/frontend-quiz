@@ -14,7 +14,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
-      <div className="container mx-auto pt-20 pb-30 px-20 max-sm:px-5 max-sm:pb-5">
+      <div className="container mx-auto pt-20 pb-30 px-20 max-sm:px-5 max-sm:pb-5 max-sm:pt-10">
         <div>
           <Routes>
             <Route path="/" element={<Welcome />} />

@@ -91,20 +91,22 @@ export default function Accessibility() {
         <h1 className="ml-3">Accessibility</h1>
       </div>
 
-      <div className="grid grid-cols-2 mt-5">
-        <div className="flex flex-col gap-40">
-          <div className="w-[80%]">
+      <div className="grid grid-cols-2 mt-5 max-sm:grid-cols-1">
+        <div className="flex flex-col gap-40 max-sm:flex-col-reverse max-sm:gap-5">
+          <div className="w-[80%] max-sm:w-full max-sm:mb-5">
             <small className="text-gray-400 italic">
               Question {questionCount + 1} of 10
             </small>
-            <h1 className="text-4xl font-bold">{questions?.question}</h1>
+            <h1 className="text-4xl font-bold max-sm:text-2xl">
+              {questions?.question}
+            </h1>
           </div>
 
           <div>
             <progress
               value={progressBar}
               max={100}
-              className="w-[80%] mx-auto overflow-hidden [&::-webkit-progress-bar]:bg-[var(--option-bg)] [&::-webkit-progress-value]:bg-[var(--submit-button)] [&::-moz-progress-bar]: bg-[var(--submit-button)] h-2 rounded-full"
+              className="w-[80%] max-sm:w-full mx-auto overflow-hidden [&::-webkit-progress-bar]:bg-[var(--option-bg)] [&::-webkit-progress-value]:bg-[var(--submit-button)] [&::-moz-progress-bar]: bg-[var(--submit-button)] h-2 rounded-full"
             ></progress>
           </div>
         </div>
@@ -116,7 +118,7 @@ export default function Accessibility() {
                 handleClickOption(index);
                 handleQuestionStatus(option);
               }}
-              className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl ${
+              className={`bg-[var(--option-bg)] mb-5 p-3 rounded-2xl ${
                 submitQuestion && submittedOption
                   ? "cursor-not-allowed"
                   : "cursor-pointer"
@@ -139,27 +141,29 @@ export default function Accessibility() {
               }
               `}
             >
-              {index === 0 && (
-                <QuizOptionId>
-                  <span>A</span>
-                </QuizOptionId>
-              )}
-              {index === 1 && (
-                <QuizOptionId>
-                  <span>B</span>
-                </QuizOptionId>
-              )}
-              {index === 2 && (
-                <QuizOptionId>
-                  <span>C</span>
-                </QuizOptionId>
-              )}
-              {index === 3 && (
-                <QuizOptionId>
-                  <span>D</span>
-                </QuizOptionId>
-              )}
-              {option}
+              <div className="flex items-center">
+                {index === 0 && (
+                  <QuizOptionId>
+                    <span>A</span>
+                  </QuizOptionId>
+                )}
+                {index === 1 && (
+                  <QuizOptionId>
+                    <span>B</span>
+                  </QuizOptionId>
+                )}
+                {index === 2 && (
+                  <QuizOptionId>
+                    <span>C</span>
+                  </QuizOptionId>
+                )}
+                {index === 3 && (
+                  <QuizOptionId>
+                    <span>D</span>
+                  </QuizOptionId>
+                )}
+                <span>{option}</span>
+              </div>
             </li>
           ))}
           {submitQuestion && questionCount >= 9 ? (

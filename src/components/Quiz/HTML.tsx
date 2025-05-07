@@ -97,7 +97,9 @@ export default function HTML() {
             <small className="text-gray-400 italic">
               Question {questionCount + 1} of 10
             </small>
-            <h1 className="text-4xl font-bold">{questions?.question}</h1>
+            <h1 className="text-4xl font-bold max-sm:text-2xl">
+              {questions?.question}
+            </h1>
           </div>
 
           <div>
@@ -116,7 +118,7 @@ export default function HTML() {
                 handleClickOption(index);
                 handleQuestionStatus(option);
               }}
-              className={`bg-[var(--option-bg)] mb-5 p-5 rounded-2xl ${
+              className={`bg-[var(--option-bg)] max-sm:text-[14px] mb-5 p-3 rounded-2xl ${
                 submitQuestion && submittedOption
                   ? "cursor-not-allowed"
                   : "cursor-pointer"
@@ -139,27 +141,29 @@ export default function HTML() {
               }
               `}
             >
-              {index === 0 && (
-                <QuizOptionId>
-                  <span>A</span>
-                </QuizOptionId>
-              )}
-              {index === 1 && (
-                <QuizOptionId>
-                  <span>B</span>
-                </QuizOptionId>
-              )}
-              {index === 2 && (
-                <QuizOptionId>
-                  <span>C</span>
-                </QuizOptionId>
-              )}
-              {index === 3 && (
-                <QuizOptionId>
-                  <span>D</span>
-                </QuizOptionId>
-              )}
-              {option}
+              <div className="flex items-center">
+                {index === 0 && (
+                  <QuizOptionId>
+                    <span>A</span>
+                  </QuizOptionId>
+                )}
+                {index === 1 && (
+                  <QuizOptionId>
+                    <span>B</span>
+                  </QuizOptionId>
+                )}
+                {index === 2 && (
+                  <QuizOptionId>
+                    <span>C</span>
+                  </QuizOptionId>
+                )}
+                {index === 3 && (
+                  <QuizOptionId>
+                    <span>D</span>
+                  </QuizOptionId>
+                )}
+                <span> {option}</span>
+              </div>
             </li>
           ))}
           {submitQuestion && questionCount >= 9 ? (

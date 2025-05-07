@@ -14,15 +14,15 @@ export default function Finished() {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between max-sm:flex-col max-sm:gap-7">
       <div>
-        <h1 className="text-6xl">
+        <h1 className="text-6xl max-sm:text-4xl">
           Quiz Completed <br />{" "}
           <span className="font-bold">You Scored... </span>
         </h1>
       </div>
       <div>
-        <div className="bg-white text-[var(--option-bg)] font-bold p-15 rounded-[2.4rem] w-[35vw]">
+        <div className="bg-white text-[var(--option-bg)] font-bold p-15 rounded-[2.4rem] w-[35vw] max-sm:w-full">
           <div>
             <div className="flex items-center justify-center gap-4 mb-5">
               <img src={`/images/${icon}`} alt="icon" />
