@@ -8,7 +8,6 @@ import CSS from "./components/Quiz/CSS";
 import HTML from "./components/Quiz/HTML";
 import Error from "./components/Error";
 import Finished from "./components/Quiz/FInished";
-import Toggle from "./components/Toggle";
 import { ThemeProvider } from "./context/ThemeProvider";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";

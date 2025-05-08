@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
 export default function Toggle() {
-  const { lightMode, toggleLightMode } = useContext(ThemeContext);
+  const { toggleLightMode } = useContext(ThemeContext);
   const [click, setClcik] = useState(false);
   function handleClickToggle() {
     setClcik((click) => !click);

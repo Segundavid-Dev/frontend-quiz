@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { MdOutlineCancel } from "react-icons/md";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type QuestionProps = {
   question: string;
@@ -25,6 +25,8 @@ export default function HTML() {
   const [correctScore, setCorrectScore] = useState(0);
   const [icon, setIcon] = useState("");
   const [title, setTitle] = useState("");
+
+  const { lightMode } = useContext(ThemeContext);
 
   function handleClickOption(index: number) {
     // early return to handle selecting multiple answers
@@ -106,7 +108,7 @@ export default function HTML() {
             <progress
               value={progressBar}
               max={100}
-              className="w-[80%] max-sm:w-full mx-auto overflow-hidden [&::-webkit-progress-bar]:bg-[var(--option-bg)] [&::-webkit-progress-value]:bg-[var(--submit-button)] [&::-moz-progress-bar]: bg-[var(--submit-button)] h-2 rounded-full"
+              className={`w-[80%] max-sm:w-full mx-auto overflow-hidden [&::-webkit-progress-bar]:bg-[var(--option-bg)] [&::-webkit-progress-value]:bg-[var(--submit-button)] [&::-moz-progress-bar]: bg-[var(--submit-button)] h-2 rounded-full`}
             ></progress>
           </div>
         </div>
@@ -118,7 +120,7 @@ export default function HTML() {
                 handleClickOption(index);
                 handleQuestionStatus(option);
               }}
-              className={`bg-[var(--option-bg)] max-sm:text-[14px] mb-5 p-3 rounded-2xl ${
+              className={`max-sm:text-[14px] mb-5 p-3 shadow-md rounded-2xl ${
                 submitQuestion && submittedOption
                   ? "cursor-not-allowed"
                   : "cursor-pointer"
@@ -130,14 +132,13 @@ export default function HTML() {
               ${
                 submitQuestion && optionClicked && option === Answer
                   ? "bg-emerald-500"
-                  : "" /*after clicking submit, any option that matches Answer should turn green*/
-              }
-              ${
-                submitQuestion &&
-                option === submittedOption &&
-                option !== Answer
+                  : submitQuestion &&
+                    option === submittedOption &&
+                    option !== Answer
                   ? "bg-red-500"
-                  : ""
+                  : lightMode
+                  ? "bg-white"
+                  : "bg-[var(--option-bg)]"
               }
               `}
             >
@@ -174,14 +175,18 @@ export default function HTML() {
             />
           ) : submitQuestion && questionCount < 9 ? (
             <button
-              className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+              className={`bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold ${
+                lightMode && "text-white"
+              }`}
               onClick={handleNextQuestion}
             >
               Next Question
             </button>
           ) : (
             <button
-              className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+              className={`bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold ${
+                lightMode && "text-white"
+              }`}
               onClick={handleSubmit}
             >
               Submit Answer

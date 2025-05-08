@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import { MdOutlineCancel } from "react-icons/md";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type QuestionProps = {
   question: string;
@@ -25,6 +26,8 @@ export default function Javascript() {
   const [correctScore, setCorrectScore] = useState(0);
   const [icon, setIcon] = useState("");
   const [title, setTitle] = useState("");
+
+  const { lightMode } = useContext(ThemeContext);
 
   function handleClickOption(index: number) {
     // early return to handle selecting multiple answers
@@ -127,18 +130,17 @@ export default function Javascript() {
                   ? "translate-x-10"
                   : ""
               }
-              ${
-                submitQuestion && optionClicked && option === Answer
-                  ? "bg-emerald-500"
-                  : "" /*after clicking submit, any option that matches Answer should turn green*/
-              }
-              ${
-                submitQuestion &&
-                option === submittedOption &&
-                option !== Answer
-                  ? "bg-red-500"
-                  : ""
-              }
+                  ${
+                    submitQuestion && optionClicked && option === Answer
+                      ? "bg-emerald-500"
+                      : submitQuestion &&
+                        option === submittedOption &&
+                        option !== Answer
+                      ? "bg-red-500"
+                      : lightMode
+                      ? "bg-white"
+                      : "bg-[var(--option-bg)]"
+                  }
               `}
             >
               <div className="flex items-center">
@@ -174,14 +176,18 @@ export default function Javascript() {
             />
           ) : submitQuestion && questionCount < 9 ? (
             <button
-              className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+              className={`bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold ${
+                lightMode && "text-white"
+              }`}
               onClick={handleNextQuestion}
             >
               Next Question
             </button>
           ) : (
             <button
-              className="bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold"
+              className={`bg-[var(--submit-button)] w-full p-5 rounded-2xl cursor-pointer hover:bg-[var(--submit-button-hover)] duration-300 font-bold ${
+                lightMode && "text-white"
+              }`}
               onClick={handleSubmit}
             >
               Submit Answer
