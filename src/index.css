@@ -7,10 +7,11 @@ body {
   color: white;
   background-image: url(../public/images/pattern-background-desktop-dark.svg);
   background-repeat: no-repeat;
-  background-size: cover;
+  /* background-size: auto; */
   background-clip: border-box;
   user-select: none;
   background-position: center center;
+  transition: background-color 0.3s ease;
 }
 
 @theme {
@@ -21,4 +22,10 @@ body {
   --accessibility-background: #f6e5ff;
   --submit-button: #a629f6;
   --submit-button-hover: #6a199f;
+}
+
+body.light-mode {
+  background-image: url(../public/images/pattern-background-desktop-light.svg);
+  background-color: #f4f6fa !important;
+  color: #313e51 !important;
 }
